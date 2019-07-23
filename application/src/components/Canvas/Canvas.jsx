@@ -14,16 +14,25 @@ class Canvas extends React.Component {
 
         this.square.canvas = this.canvas;
         this.square.ctx = this.ctx;
-        this.square.componentDidMount();
 
         this.updateCanvas();
+    }
+
+    componentWillUnmount() {
+        this.square.remove();
     }
 
     updateCanvas() {
         this.ctx.fillStyle = 'rgba(10, 10, 20, 0.8)';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.square.drawSquare();
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, this.canvas.height - 50);
+        this.ctx.lineTo(this.canvas.width, this.canvas.height - 50);
+        this.ctx.strokeStyle = 'white';
+        this.ctx.stroke();
+
+        this.square.render();
 
         requestAnimationFrame(this.updateCanvas.bind(this));
     }
