@@ -25,6 +25,13 @@
   background: rgb(255, 10, 10);
 }
 
+.RouterLogo {
+  position: absolute;
+  top: 160px;
+  right: 80px;
+  height: 50px
+}
+
 .Logo {
   animation: Logo-spin infinite 20s linear;
   height: 40vmin;
