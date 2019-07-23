@@ -1,17 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-import Canvas from './components/Canvas/Canvas';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Home from './pages/Home/Home';
+import Chat from './pages/Chat/Chat';
 
 function App() {
   return (
-    <div className="App">
-        <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-        </header>
-        <Canvas/>
-    </div>
+      <Router>
+          <Route exact path="/" component={Home} />
+          <Route path="/chat" component={Chat} />
+      </Router>
   );
 }
 
