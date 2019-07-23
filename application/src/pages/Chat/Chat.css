@@ -1,0 +1,29 @@
+.Chat {
+    height: 100vh;
+    background-color: rgb(20, 20, 20);
+}
+
+.Chat__Link {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: block;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    line-height: 100px;
+    font-size: 50px;
+    background: rgb(110, 180, 200);
+}
+
+.Chat__Link:hover {
+    background: rgb(255, 10, 10);
+}
+
+.Title {
+    position: absolute;
+    top: 50vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
