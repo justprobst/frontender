@@ -4,7 +4,7 @@ import logo from '../../logo.svg';
 import router_logo from '../../react-router.svg';
 import './Home.css'
 
-import Canvas from '../../components/Canvas/Canvas';
+import Canvas from '../../components/home/Canvas/Canvas';
 
 function Home() {
     return (
