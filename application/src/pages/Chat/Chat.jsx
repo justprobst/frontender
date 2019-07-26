@@ -11,6 +11,12 @@ function Chat() {
     const socket = openSocket('http://localhost:8989');
     socket.emit('chat message', 'hello from user');
 
+    const onMessage = (message) => {
+        console.log(message);
+    };
+
+    socket.on('chat message', message => onMessage(message));
+
     return (
         <div className="Chat">
             <Link className="Chat__Link" to="/">Home</Link>
