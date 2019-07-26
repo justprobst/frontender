@@ -1,0 +1,7 @@
+.Sidebar {
+    display: inline-block;
+    width: 30%;
+    background-color: #fff;
+    border-right: 3px solid black;
+    box-sizing: border-box;
+}
