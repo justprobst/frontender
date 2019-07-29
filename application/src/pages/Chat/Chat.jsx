@@ -1,21 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import openSocket from 'socket.io-client';
-import Sidebar from '../../components/chat/Sidebar/Sidebar';
-import MessagesList from '../../components/chat/MessagesList/MessagesList';
-import AddMessage from '../../components/chat/AddMessage/AddMessage';
+import Sidebar from '../../containers/chat/Sidebar';
+import MessagesList from '../../containers/chat/MessagesList';
+import AddMessage from '../../containers/chat/AddMessage';
 
 import './Chat.css';
 
 function Chat() {
-    const socket = openSocket('http://localhost:8989');
-    socket.emit('chat message', 'hello from user');
-
-    const onMessage = (message) => {
-        console.log(message);
-    };
-
-    socket.on('chat message', message => onMessage(message));
+    // const socket = openSocket('http://localhost:8989');
+    // socket.emit('chat message', 'hello from user');
+    //
+    // const onMessage = (message) => {
+    //     console.log(message);
+    // };
+    //
+    // socket.on('chat message', message => onMessage(message));
 
     return (
         <div className="Chat">

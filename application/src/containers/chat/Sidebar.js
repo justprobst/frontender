@@ -5,4 +5,6 @@ const mapStateToProps = state => ({
     users: state.users
 });
 
-export const Sidebar = connect(mapStateToProps, {})(SidebarComponent);
+const Sidebar = connect(mapStateToProps, {})(SidebarComponent);
+
+export default Sidebar;

@@ -1,11 +1,13 @@
 import { connect } from 'react-redux';
 import AddMessageComponent from '../../components/chat/AddMessage/AddMessage';
-import { messages } from '../../store/actions';
+import { AddMessage as AddMessageAction } from '../../store/actions/messages';
 
 const mapDispatchToProps = dispatch => ({
     onSubmit: (message, author) => {
-        dispatch(messages.AddMessage(message, author));
+        dispatch(AddMessageAction(message, author));
     }
 });
 
-export const AddMessage = connect(() => ({}), mapDispatchToProps)(AddMessageComponent);
+const AddMessage = connect(() => ({}), mapDispatchToProps)(AddMessageComponent);
+
+export default AddMessage;
