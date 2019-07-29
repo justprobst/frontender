@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import { createStore } from 'redux';
 import * as serviceWorker from './serviceWorker';
+import App from './App';
+import chat from './store/reducers';
+import './index.css';
+
+const store = createStore(chat);
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
