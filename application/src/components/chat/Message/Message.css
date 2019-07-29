@@ -1,0 +1,11 @@
+.Message {
+    display: flex;
+    align-items: center;
+}
+
+.Message__Author {
+    padding: 5px;
+    margin: 5px;
+    border-radius: 20px;
+    background-color: rgba(200, 200, 200, 0.5);
+}
