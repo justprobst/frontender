@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import openSocket from 'socket.io-client';
 import Sidebar from '../../containers/chat/Sidebar';
 import MessagesList from '../../containers/chat/MessagesList';
 import AddMessage from '../../containers/chat/AddMessage';
-
+import {AddMessage as AddMessageAction} from "../../store/actions/messages";
+import {addUser as AddUserAction} from "../../store/actions/users";
 import './Chat.css';
 
-class Chat extends React.Component {
+class ChatComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,8 +21,8 @@ class Chat extends React.Component {
     setupSocket() {
         this.socket = openSocket('http://localhost:8989');
         this.socket.emit('add user', this.state.username);
-        this.socket.on('chat message', (message, user) => console.log(message + ' from ' + user));
-        this.socket.on('add user', (username) => console.log(username + ' connected'));
+        this.socket.on('chat message', (message, user) => this.props.addMessage(message, user));
+        this.socket.on('add user', (username) => this.props.addUser(username));
     }
 
     render() {
@@ -39,6 +41,7 @@ class Chat extends React.Component {
                             onChange={(e) => this.setState({username: e.target.value})}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' && this.state.username.length) {
+                                    this.props.addUser(this.state.username);
                                     this.setState({userNameAccepted: true});
                                     this.setupSocket();
                                 }
@@ -60,5 +63,16 @@ class Chat extends React.Component {
         );
     }
 }
+
+const mapDispatchToProps = dispatch => ({
+    addMessage: (message, author) => {
+        dispatch(AddMessageAction(message, author));
+    },
+    addUser: (username) => {
+        dispatch(AddUserAction(username));
+    }
+});
+
+const Chat = connect(() => ({}), mapDispatchToProps)(ChatComponent);
 
 export default Chat;
