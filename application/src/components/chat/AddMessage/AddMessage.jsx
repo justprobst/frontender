@@ -24,7 +24,10 @@ class AddMessage extends React.Component {
                 <button
                     className="AddMessage__Button"
                     onClick={
-                        () => this.props.onSubmit(this.state.input, 'Me')
+                        () => {
+                            this.props.onSubmit(this.state.input, 'Me');
+                            this.props.sendMessageToSocket(this.state.input);
+                        }
                     }
                 >Send</button>
             </div>

@@ -8,14 +8,11 @@ import AddMessage from '../../containers/chat/AddMessage';
 import './Chat.css';
 
 function Chat() {
-    // const socket = openSocket('http://localhost:8989');
-    // socket.emit('chat message', 'hello from user');
-    //
-    // const onMessage = (message) => {
-    //     console.log(message);
-    // };
-    //
-    // socket.on('chat message', message => onMessage(message));
+    const socket = openSocket('http://localhost:8989');
+
+    socket.on('chat message', (message, user) => console.log(message + ' from ' + user));
+
+    const name = 'User' + Math.floor(Math.random() * 100);
 
     return (
         <div className="Chat">
@@ -25,7 +22,7 @@ function Chat() {
                 <Sidebar />
                 <div className="MessagesWindow">
                     <MessagesList />
-                    <AddMessage />
+                    <AddMessage sendMessageToSocket={message => socket.emit('chat message', message, name)}/>
                 </div>
             </div>
         </div>
