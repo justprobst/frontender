@@ -9,7 +9,10 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', socket => {
-    console.log('a user connected');
+    socket.on('add user', username => {
+        console.log(username + ' connected');
+        socket.broadcast.emit('add user', username);
+    });
 
     socket.on('chat message', (message, user) => {
         socket.broadcast.emit('chat message', message, user);

@@ -18,7 +18,9 @@ class Chat extends React.Component {
 
     setupSocket() {
         this.socket = openSocket('http://localhost:8989');
+        this.socket.emit('add user', this.state.username);
         this.socket.on('chat message', (message, user) => console.log(message + ' from ' + user));
+        this.socket.on('add user', (username) => console.log(username + ' connected'));
     }
 
     render() {
