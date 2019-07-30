@@ -1,20 +1,11 @@
 import React from 'react';
 import './Sidebar.css';
 
-function Sidebar() {
-    const users = [
-        {
-            name: "Roman"
-        },
-        {
-            name: "Ilya"
-        }
-    ];
-
+function Sidebar(props) {
     return (
         <div className="Sidebar">
             {
-                users.map((user, index) => (
+                props.users && props.users.map((user, index) => (
                     <div key={index} className="UserName">{user.name}</div>
                 ))
             }
