@@ -1,11 +1,10 @@
 import { ADD_USER } from '../actions/ActionTypes';
 
 const users = (state = [], action) => {
-    switch (action.type) {
+    const {type, ...otherProps} = action;
+    switch (type) {
         case ADD_USER:
-            return Object.assign({}, state, {
-                name: action.name,
-            });
+            return [...state, otherProps];
         default:
             return state;
     }

@@ -2,23 +2,12 @@ import React from 'react';
 import Message from '../Message/Message'
 import './MessagesList.css';
 
-function MessagesList() {
-    const messages = [
-        {
-            author: "Roman",
-            message: "Hello World"
-        },
-        {
-            author: "Ilya",
-            message: "Hi JSX"
-        }
-    ];
-
+function MessagesList(props) {
     return (
         <div className="MessagesList">
             {
-                messages.map((message, index) => (
-                    <Message key={index} author={message.author} message={message.message} />
+                props.messages && props.messages.map((message, index) => (
+                    <Message key={index} {...message} />
                 ))
             }
         </div>

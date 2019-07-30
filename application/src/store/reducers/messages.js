@@ -1,13 +1,11 @@
 import { ADD_MESSAGE, MESSAGE_RECEIVED } from '../actions/ActionTypes';
 
 const messages = (state = [], action) => {
-    switch (action.type) {
+    const {type, ...otherProps} = action;
+    switch (type) {
         case ADD_MESSAGE:
         case MESSAGE_RECEIVED:
-            return Object.assign({}, state, {
-                message: action.message,
-                author: action.author,
-            });
+            return [...state, otherProps];
         default:
             return state;
     }
