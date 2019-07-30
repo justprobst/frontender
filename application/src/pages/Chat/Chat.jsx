@@ -5,8 +5,9 @@ import openSocket from 'socket.io-client';
 import Sidebar from '../../containers/chat/Sidebar';
 import MessagesList from '../../containers/chat/MessagesList';
 import AddMessage from '../../containers/chat/AddMessage';
-import {AddMessage as AddMessageAction} from "../../store/actions/messages";
-import {addUser as AddUserAction} from "../../store/actions/users";
+import { AddMessage as AddMessageAction } from "../../store/actions/messages";
+import { addUser as AddUserAction } from "../../store/actions/users";
+import { populateUsersList } from "../../store/actions/users";
 import './Chat.css';
 
 class ChatComponent extends React.Component {
@@ -22,7 +23,8 @@ class ChatComponent extends React.Component {
         this.socket = openSocket('http://localhost:8989');
         this.socket.emit('add user', this.state.username);
         this.socket.on('chat message', (message, user) => this.props.addMessage(message, user));
-        this.socket.on('add user', (username) => this.props.addUser(username));
+        this.socket.on('add user', username => this.props.addUser(username));
+        this.socket.on('users list', users => this.props.populateUsersList(users));
     }
 
     render() {
@@ -41,7 +43,6 @@ class ChatComponent extends React.Component {
                             onChange={(e) => this.setState({username: e.target.value})}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' && this.state.username.length) {
-                                    this.props.addUser(this.state.username);
                                     this.setState({userNameAccepted: true});
                                     this.setupSocket();
                                 }
@@ -70,6 +71,9 @@ const mapDispatchToProps = dispatch => ({
     },
     addUser: (username) => {
         dispatch(AddUserAction(username));
+    },
+    populateUsersList: (users) => {
+        dispatch(populateUsersList(users));
     }
 });
 

@@ -1,10 +1,12 @@
-import { ADD_USER } from '../actions/ActionTypes';
+import { ADD_USER, USERS_LIST  } from '../actions/ActionTypes';
 
 const users = (state = [], action) => {
-    const {type, ...otherProps} = action;
-    switch (type) {
+    switch (action.type) {
         case ADD_USER:
+            const {type, ...otherProps} = action;
             return [...state, otherProps];
+        case USERS_LIST:
+            return action.users;
         default:
             return state;
     }

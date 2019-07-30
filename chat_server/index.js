@@ -4,6 +4,8 @@ const io = require('socket.io')(http);
 
 const port = 8989;
 
+const users = [];
+
 app.get('/', (req, res) => {
     res.send('chat server serves here');
 });
@@ -11,7 +13,10 @@ app.get('/', (req, res) => {
 io.on('connection', socket => {
     socket.on('add user', username => {
         console.log(username + ' connected');
+        users.push({username});
         socket.broadcast.emit('add user', username);
+        socket.emit('users list', users);
+
     });
 
     socket.on('chat message', (message, user) => {

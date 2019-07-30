@@ -1,9 +1,14 @@
-import { ADD_USER } from './ActionTypes';
+import { ADD_USER, USERS_LIST } from './ActionTypes';
 
 let nextUserId = 0;
 
-export const addUser = name => ({
+export const addUser = username => ({
     type: ADD_USER,
     id: nextUserId++,
-    name
+    username
+});
+
+export const populateUsersList = users => ({
+    type: USERS_LIST,
+    users
 });
