@@ -39,3 +39,14 @@
     width: 70%;
     height: 100%;
 }
+
+.NameInput {
+    display: block;
+    width: 200px;
+    padding: 5px;
+    margin: 44px auto;
+}
+
+.NameInput:focus {
+    outline: none;
+}
