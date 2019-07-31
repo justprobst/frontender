@@ -1,0 +1,39 @@
+.AddMessage {
+    display: flex;
+    background-color: #fff;
+}
+
+.AddMessage__Input {
+    width: 100%;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgba(10, 10, 10, 0.1);
+}
+
+.AddMessage__Input:focus {
+    outline: none;
+}
+
+.AddMessage__Button {
+    margin: 5px;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    background-color: rgb(50, 80, 200);
+    border-radius: 10px;
+    border-style: none;
+    color: white
+}
+
+.AddMessage__Button:hover {
+    background-color: rgb(180, 0, 120);
+    cursor: pointer;
+}
+
+.AddMessage__Button:active {
+    background-color: rgb(120, 0, 120);
+}
+
+.AddMessage__Button:focus {
+    outline: none;
+}

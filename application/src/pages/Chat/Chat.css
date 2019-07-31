@@ -4,9 +4,6 @@
 }
 
 .Chat__Link {
-    position: absolute;
-    left: 0;
-    right: 0;
     display: block;
     text-align: center;
     color: white;
@@ -20,10 +17,60 @@
     background: rgb(255, 10, 10);
 }
 
-.Title {
-    position: absolute;
-    top: 50vh;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.Chat__Window {
+    display: flex;
+    height: 500px;
+    padding: 30px 200px 0 200px;
+}
+
+.Chat__Title {
+    margin-top: 50px;
+    text-align: center;
     color: white;
+}
+
+.Chat__Sidebar {
+    width: 30px;
+}
+
+.MessagesWindow {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    height: 100%;
+}
+
+.NameInput {
+    display: block;
+    width: 200px;
+    padding: 5px;
+    margin: 44px auto;
+}
+
+.NameInput:focus {
+    outline: none;
+}
+
+.ConfirmNameButton {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    background-color: rgb(50, 80, 200);
+    border-radius: 10px;
+    border-style: none;
+    color: white
+}
+
+.ConfirmNameButton:hover {
+    background-color: rgb(180, 0, 120);
+    cursor: pointer;
+}
+
+.ConfirmNameButton:active {
+    background-color: rgb(120, 0, 120);
+}
+
+.ConfirmNameButton:focus {
+    outline: none;
 }
