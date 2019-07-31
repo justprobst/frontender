@@ -10,6 +10,8 @@ class AddMessage extends React.Component {
     }
 
     onSubmitMessage() {
+        if (!this.state.input.length) return;
+
         this.props.onSubmit(this.state.input, 'Me');
         this.props.sendMessageToSocket(this.state.input);
         this.setState({input: ''});
@@ -27,7 +29,7 @@ class AddMessage extends React.Component {
                         (e) => this.setState({input: e.target.value})
                     }
                     onKeyDown={(e) => {
-                        if (e.key === 'Enter' && this.state.input.length) {
+                        if (e.key === 'Enter') {
                             this.onSubmitMessage();
                         }
                     }}
