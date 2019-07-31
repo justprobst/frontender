@@ -50,3 +50,27 @@
 .NameInput:focus {
     outline: none;
 }
+
+.ConfirmNameButton {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    background-color: rgb(50, 80, 200);
+    border-radius: 10px;
+    border-style: none;
+    color: white
+}
+
+.ConfirmNameButton:hover {
+    background-color: rgb(180, 0, 120);
+    cursor: pointer;
+}
+
+.ConfirmNameButton:active {
+    background-color: rgb(120, 0, 120);
+}
+
+.ConfirmNameButton:focus {
+    outline: none;
+}

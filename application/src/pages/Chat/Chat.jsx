@@ -39,19 +39,30 @@ class ChatComponent extends React.Component {
                 {
                     !this.state.userNameAccepted ?
                     (
-                        <input
-                            className="NameInput"
-                            type="text"
-                            placeholder="Your name"
-                            value={this.state.username}
-                            onChange={(e) => this.setState({username: e.target.value})}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter' && this.state.username.length) {
-                                    this.setState({userNameAccepted: true});
-                                    this.setupSocket();
-                                }
-                            }}
-                        />
+                        <>
+                            <input
+                                className="NameInput"
+                                type="text"
+                                placeholder="Your name"
+                                value={this.state.username}
+                                onChange={(e) => this.setState({username: e.target.value})}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && this.state.username.length) {
+                                        this.setState({userNameAccepted: true});
+                                        this.setupSocket();
+                                    }
+                                }}
+                            />
+                            <button
+                                className="ConfirmNameButton"
+                                onClick={() => {
+                                    if (this.state.username.length) {
+                                        this.setState({userNameAccepted: true});
+                                        this.setupSocket();
+                                    }
+                                }}
+                            >CONFIRM NAME</button>
+                        </>
                     )
                         :
                     (
