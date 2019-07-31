@@ -3,10 +3,6 @@ import Message from '../Message/Message'
 import './MessagesList.css';
 
 class MessagesList extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     componentDidUpdate() {
         const messagesList = this.refs.messagesList;
         messagesList.scrollTop = messagesList.scrollHeight;
