@@ -28,7 +28,9 @@ class ChatComponent extends React.Component {
     }
 
     closeSocket() {
-        this.socket.disconnect();
+        if (this.socket) {
+            this.socket.disconnect();
+        }
     }
 
     render() {
