@@ -27,10 +27,14 @@ class ChatComponent extends React.Component {
         this.socket.on('users list', users => this.props.populateUsersList(users));
     }
 
+    closeSocket() {
+        this.socket.disconnect();
+    }
+
     render() {
         return (
             <div className="Chat">
-                <Link className="Chat__Link" to="/">Home</Link>
+                <Link className="Chat__Link" to="/" onClick={() => this.closeSocket()}>Home</Link>
                 <h1 className="Chat__Title">{this.state.userNameAccepted ? "CHAT" : "WHAT IS YOUR NAME ?"}</h1>
                 {
                     !this.state.userNameAccepted ?

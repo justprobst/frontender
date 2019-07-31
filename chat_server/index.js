@@ -31,7 +31,11 @@ io.on('connection', socket => {
     });
 
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        console.log(user.username + ' disconnected');
+        const userIndex = users.map(user => user.id).indexOf(userId);
+        users[userIndex] = users[users.length - 1];
+        users.pop();
+        socket.broadcast.emit('users list', users);
     });
 });
 
