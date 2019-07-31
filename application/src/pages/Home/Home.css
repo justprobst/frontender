@@ -1,13 +1,3 @@
-.Home__Header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .Home__Link {
   position: absolute;
   left: 0;
@@ -25,17 +15,8 @@
   background: rgb(255, 10, 10);
 }
 
-.RouterLogo {
-  position: absolute;
-  top: 160px;
-  right: 80px;
-  height: 50px
-}
-
-.Logo {
+.Logo_spin {
   animation: Logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
 }
 
 @keyframes Logo-spin {
@@ -45,4 +26,48 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.ReactLogo {
+  position: absolute;
+  top: calc(50% - 150px);
+  left: calc(50% - 150px);
+  width: 300px;
+  height: 300px;
+}
+
+.RouterLogo {
+  position: absolute;
+  top: 160px;
+  right: 80px;
+  height: 70px;
+}
+
+.ReduxLogo {
+  position: absolute;
+  top: 145px;
+  left: 80px;
+  height: 100px;
+}
+
+.SocketLogo {
+  position: absolute;
+  top: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 80px;
+}
+
+.NodeJsLogo {
+  position: absolute;
+  top: 255px;
+  right: 300px;
+  height: 100px
+}
+
+.ExpressLogo {
+  position: absolute;
+  top: 275px;
+  left: 280px;
+  height: 50px;
 }
