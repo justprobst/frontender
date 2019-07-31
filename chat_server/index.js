@@ -11,16 +11,23 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', socket => {
+    const user = {};
+    let userId = 0;
+
     socket.on('add user', username => {
         console.log(username + ' connected');
-        users.push({username});
+        user.username = username;
+        while (users.length > userId && users.map(user => user.id).indexOf(userId) !== -1) {
+            userId++;
+        }
+        user.id =  userId;
+        users.push(user);
         socket.broadcast.emit('add user', username);
         socket.emit('users list', users);
-
     });
 
-    socket.on('chat message', (message, user) => {
-        socket.broadcast.emit('chat message', message, user);
+    socket.on('chat message', (message) => {
+        socket.broadcast.emit('chat message', message, user.username);
     });
 
     socket.on('disconnect', () => {

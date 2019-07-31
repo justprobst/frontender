@@ -5,7 +5,7 @@ import openSocket from 'socket.io-client';
 import Sidebar from '../../containers/chat/Sidebar';
 import MessagesList from '../../containers/chat/MessagesList';
 import AddMessage from '../../containers/chat/AddMessage';
-import { AddMessage as AddMessageAction } from "../../store/actions/messages";
+import { messageReceived } from "../../store/actions/messages";
 import { addUser as AddUserAction } from "../../store/actions/users";
 import { populateUsersList } from "../../store/actions/users";
 import './Chat.css';
@@ -22,7 +22,7 @@ class ChatComponent extends React.Component {
     setupSocket() {
         this.socket = openSocket('http://localhost:8989');
         this.socket.emit('add user', this.state.username);
-        this.socket.on('chat message', (message, user) => this.props.addMessage(message, user));
+        this.socket.on('chat message', (message, username) => this.props.messageReceived(message, username));
         this.socket.on('add user', username => this.props.addUser(username));
         this.socket.on('users list', users => this.props.populateUsersList(users));
     }
@@ -55,7 +55,7 @@ class ChatComponent extends React.Component {
                             <Sidebar />
                             <div className="MessagesWindow">
                                 <MessagesList />
-                                <AddMessage sendMessageToSocket={message => this.socket.emit('chat message', message, this.state.username)}/>
+                                <AddMessage sendMessageToSocket={message => this.socket.emit('chat message', message)}/>
                             </div>
                         </div>
                     )
@@ -66,8 +66,8 @@ class ChatComponent extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    addMessage: (message, author) => {
-        dispatch(AddMessageAction(message, author));
+    messageReceived: (message, author) => {
+        dispatch(messageReceived(message, author));
     },
     addUser: (username) => {
         dispatch(AddUserAction(username));
