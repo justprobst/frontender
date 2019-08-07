@@ -44,14 +44,22 @@ class Canvas extends React.Component {
         this.square.canvas = this.canvas;
         this.square.ctx = this.ctx;
 
+        window.addEventListener('resize', this.resize);
+
         this.addStars(100);
 
         this.renderCanvas();
     }
 
     componentWillUnmount() {
+        window.removeEventListener('resize', this.resize);
         this.square.remove();
     }
+
+    resize = () => {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+    };
 
     addStars(count) {
         this.stars = [];
@@ -94,7 +102,7 @@ class Canvas extends React.Component {
 
     renderCanvas() {
         const sin = 0.5 + 0.5 * Math.sin(this.time * Math.PI / 12 - Math.PI * 2 / 3);
-        
+
         this.ctx.fillStyle = `rgb(${10 * sin}, ${160 * sin}, ${255 * sin})`;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height - 50);
 
