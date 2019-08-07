@@ -12,26 +12,36 @@ class Canvas extends React.Component {
 
     componentWillMount() {
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'https://api.openweathermap.org/data/2.5/weather?q=Moscow&appid=908f63483a48a754f71cc6dc4ef45443');
+        xhr.open('GET', 'http://ip-api.com/json');
         xhr.onreadystatechange  = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                const response  = JSON.parse(xhr.response);
-                this.wind = response.wind;
+                const city  = JSON.parse(xhr.response).city;
 
-                if (response.weather) {
-                    if (response.weather.some(weather_option => weather_option.main === 'Rain')) {
-                        this.addRain(100);
-                    }
+                const weather_xhr = new XMLHttpRequest();
+                weather_xhr.open('GET', `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=908f63483a48a754f71cc6dc4ef45443`);
+                weather_xhr.onreadystatechange  = () => {
+                    if (weather_xhr.readyState === 4 && weather_xhr.status === 200) {
+                        const response  = JSON.parse(weather_xhr.response);
 
-                    if (response.weather.some(weather_option => weather_option.main === 'Clouds')) {
-                        this.cloud = new Image();
-                        this.cloud.src = cloud;
-                    }
+                        this.wind = response.wind;
 
-                    if (response.weather.some(weather_option => weather_option.main === 'Mist')) {
-                        this.mist = true;
+                        if (response.weather) {
+                            if (response.weather.some(weather_option => weather_option.main === 'Rain')) {
+                                this.addRain(100);
+                            }
+
+                            if (response.weather.some(weather_option => weather_option.main === 'Clouds')) {
+                                this.cloud = new Image();
+                                this.cloud.src = cloud;
+                            }
+
+                            if (response.weather.some(weather_option => weather_option.main === 'Mist')) {
+                                this.mist = true;
+                            }
+                        }
                     }
-                }
+                };
+                weather_xhr.send();
             }
         };
         xhr.send();
