@@ -59,6 +59,8 @@
   height: 80px;
   font-size: 18px;
   font-weight: 900;
+  border-radius: 50%;
+  box-shadow: 0 0 80px 20px rgba(255, 255, 255, 0.5);
 }
 
 .SocketClock__24 {
