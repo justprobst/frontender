@@ -50,12 +50,50 @@
   height: 100px;
 }
 
-.SocketLogo {
+.SocketClock {
   position: absolute;
   top: 160px;
   left: 50%;
   transform: translateX(-50%);
+  width: 80px;
   height: 80px;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.SocketClock__24 {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.SocketClock__15 {
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.SocketClock__18 {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.SocketClock__21 {
+  position: absolute;
+  left: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.SocketLogo {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
 }
 
 .NodeJsLogo {
