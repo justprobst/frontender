@@ -116,7 +116,8 @@ class Canvas extends React.Component {
         this.ctx.fillStyle = `rgb(${10 * sin}, ${160 * sin}, ${255 * sin})`;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height - 50);
 
-        this.ctx.fillStyle = 'rgb(0, 0, 0)';
+        // ground
+        this.ctx.fillStyle = 'rgb(20, 20, 20)';
         this.ctx.fillRect(0, this.canvas.height - 50, this.canvas.width, 50);
 
         if (sin < 0.5) {
