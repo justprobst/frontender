@@ -110,6 +110,16 @@ class Canvas extends React.Component {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height - 50);
     }
 
+    drawMist(alpha) {
+        this.ctx.beginPath();
+        const gradient = this.ctx.createLinearGradient(this.canvas.width / 2, 0, this.canvas.width / 2, this.canvas.height);
+        gradient.addColorStop(0, `rgba(200, 200, 200, ${alpha * alpha})`);
+        gradient.addColorStop(0.5, `rgba(200, 200, 200, ${0.75 * alpha * alpha})`);
+        gradient.addColorStop(1, `rgba(200, 200, 200, ${0.5 * alpha * alpha})`);
+        this.ctx.fillStyle = gradient;
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height - 50);
+    }
+
     renderCanvas() {
         const sin = 0.5 + 0.5 * Math.sin(this.time * Math.PI / 12 - Math.PI * 2 / 3);
 
@@ -127,8 +137,7 @@ class Canvas extends React.Component {
         this.drawSun(sin);
 
         if (this.mist) {
-            this.ctx.fillStyle = `rgba(200, 200, 200, ${0.5 * sin * sin})`;
-            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height - 50);
+            this.drawMist(sin);
         }
 
         if (this.drops) {
