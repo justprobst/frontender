@@ -6,7 +6,7 @@ import cloud from '../../../cloud.png'
 class Canvas extends React.Component {
     constructor(props) {
         super(props);
-        this.square = new Square(50, window.innerHeight - 100, 50, 50);
+        this.square = new Square(100, window.innerHeight - 100, 50, 50);
         this.time = new Date().getHours();
     }
 
@@ -64,6 +64,7 @@ class Canvas extends React.Component {
     }
 
     componentWillUnmount() {
+        cancelAnimationFrame(this.animation);
         window.removeEventListener('resize', this.resize);
         this.square.remove();
     }
@@ -158,9 +159,9 @@ class Canvas extends React.Component {
             this.ctx.restore();
         }
 
-        this.square.render();
+        this.square.render({rain: !!this.drops});
 
-        requestAnimationFrame(this.renderCanvas.bind(this));
+        this.animation = requestAnimationFrame(this.renderCanvas.bind(this));
     }
 
     render() {

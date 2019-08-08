@@ -86,16 +86,41 @@ function Square(x, y, width, height) {
         }
     };
 
-    const drawSquare = () => {
-        this.ctx.fillStyle = 'white';
+    const drawSquare = ({ rain }) => {
+        // body
+        if (rain) {
+            this.ctx.fillStyle = '#ffe600';
+        } else {
+            this.ctx.fillStyle = '#ffffff';
+        }
         this.ctx.fillRect(this.x, this.y, this.width, this.height);
+
+        // umbrella
+        if (rain) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.x, this.y + this.height / 2);
+            this.ctx.lineTo(this.x - 7, this.y + this.height / 2);
+            this.ctx.strokeStyle = '#ffe600';
+            this.ctx.stroke();
+
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.x - 7, this.y + this.height / 2);
+            this.ctx.lineTo(this.x - 7, this.y - 10);
+            this.ctx.strokeStyle = '#111111';
+            this.ctx.stroke();
+
+            this.ctx.beginPath();
+            this.ctx.ellipse(this.x - 7, this.y - 10, 65, 30, 0, Math.PI, 0);
+            this.ctx.fillStyle = '#222222';
+            this.ctx.fill();
+        }
     };
 
-    this.render = () => {
+    this.render = (data) => {
         updateVelocity();
         updateCoordinates();
         checkCollisionDetection();
-        drawSquare();
+        drawSquare(data);
     }
 }
 
