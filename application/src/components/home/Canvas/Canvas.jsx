@@ -23,7 +23,9 @@ class Canvas extends React.Component {
                     if (weather_xhr.readyState === 4 && weather_xhr.status === 200) {
                         const response  = JSON.parse(weather_xhr.response);
 
-                        this.wind = response.wind;
+                        if (response.wind) {
+                            this.wind = response.wind;
+                        }
 
                         if (response.weather) {
                             if (response.weather.some(weather_option => weather_option.main === 'Rain')) {
@@ -90,13 +92,11 @@ class Canvas extends React.Component {
     addRain(count) {
         this.rain = [];
         for (let i = 0; i < count; i++) {
-            this.rain.push(new Blob(
-                Math.random() * this.canvas.width,
-                Math.random() * (this.canvas.height - 50),
-                Math.random() * 35 + 15,
-                Math.random() * 40 + 10
-                )
-            );
+            const x = Math.random() * this.canvas.width;
+            const y = Math.random() * (this.canvas.height - 50);
+            const velocityX = -(Math.pow(this.wind.speed, 2) / 4);
+            const velocityY = Math.random() * 10 + 20;
+            this.rain.push(new Blob(x, y, velocityX, velocityY));
         }
     }
 
@@ -140,14 +140,24 @@ class Canvas extends React.Component {
                 blob.update();
 
                 if (blob.y >= this.canvas.height - 50) {
+                    const diff = this.canvas.height * blob.velocityX / blob.velocityY;
+                    if (diff >= 0) {
+                        blob.x = Math.random() * (this.canvas.width + diff) - diff;
+                    } else {
+                        blob.x = Math.random() * (this.canvas.width - diff);
+                    }
                     blob.y = 0;
                 }
 
+                this.ctx.save();
+                this.ctx.translate(blob.x, blob.y);
+                this.ctx.rotate(blob.angle);
                 this.ctx.beginPath();
-                this.ctx.moveTo(blob.x, blob.y);
-                this.ctx.lineTo(blob.x, blob.y - blob.blobLength);
+                this.ctx.moveTo(0, 0);
+                this.ctx.lineTo(-blob.blobLength, 0);
                 this.ctx.strokeStyle = `rgba(155, 210, 255, ${sin > 0.5 ? 0.8 : 0.8 * sin + 0.4})`;
                 this.ctx.stroke();
+                this.ctx.restore();
             });
         }
 
@@ -170,14 +180,18 @@ class Canvas extends React.Component {
     }
 }
 
-function Blob(x, y, velocityY, blobLength) {
+function Blob(x, y, velocityX, velocityY) {
     this.x = x;
     this.y = y;
+    this.velocityX = velocityX;
     this.velocityY = velocityY;
-    this.blobLength = blobLength;
-    this.update = function() {
-        this.y += this.velocityY;
-    };
+    this.blobLength = Math.sqrt(Math.pow(this.velocityX, 2) + Math.pow(this.velocityY, 2));
+    this.angle = Math.atan2(this.velocityY, this.velocityX);
 }
+
+Blob.prototype.update = function() {
+    this.x += this.velocityX;
+    this.y += this.velocityY;
+};
 
 export default Canvas;
