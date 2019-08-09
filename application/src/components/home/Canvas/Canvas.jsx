@@ -10,45 +10,6 @@ class Canvas extends React.Component {
         this.time = new Date().getHours();
     }
 
-    componentWillMount() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://ip-api.com/json');
-        xhr.onreadystatechange  = () => {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                const city  = JSON.parse(xhr.response).city;
-
-                const weather_xhr = new XMLHttpRequest();
-                weather_xhr.open('GET', `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=908f63483a48a754f71cc6dc4ef45443`);
-                weather_xhr.onreadystatechange  = () => {
-                    if (weather_xhr.readyState === 4 && weather_xhr.status === 200) {
-                        const response  = JSON.parse(weather_xhr.response);
-
-                        if (response.wind) {
-                            this.wind = response.wind;
-                        }
-
-                        if (response.weather) {
-                            if (response.weather.some(weather_option => weather_option.main === 'Rain')) {
-                                this.addRain(100);
-                            }
-
-                            if (response.weather.some(weather_option => weather_option.main === 'Clouds')) {
-                                this.cloud = new Image();
-                                this.cloud.src = cloud;
-                            }
-
-                            if (response.weather.some(weather_option => weather_option.main === 'Mist')) {
-                                this.mist = true;
-                            }
-                        }
-                    }
-                };
-                weather_xhr.send();
-            }
-        };
-        xhr.send();
-    }
-
     componentDidMount() {
         this.canvas = this.refs.canvas;
         this.ctx = this.canvas.getContext('2d');
@@ -58,9 +19,58 @@ class Canvas extends React.Component {
 
         window.addEventListener('resize', this.resize);
 
+        if (sessionStorage.getItem('weather') && (new Date().getTime() - JSON.parse(sessionStorage.getItem('weather')).creation_time < 600000)) {
+            const response = JSON.parse(sessionStorage.getItem('weather'));
+            this.processResponse(response);
+        } else {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://ip-api.com/json');
+            xhr.onreadystatechange  = () => {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const city  = JSON.parse(xhr.response).city;
+
+                    const weather_xhr = new XMLHttpRequest();
+                    weather_xhr.open('GET', `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=908f63483a48a754f71cc6dc4ef45443`);
+                    weather_xhr.onreadystatechange  = () => {
+                        if (weather_xhr.readyState === 4 && weather_xhr.status === 200) {
+                            const response  = JSON.parse(weather_xhr.response);
+                            response.creation_time = new Date().getTime();
+
+                            sessionStorage.setItem('weather', JSON.stringify(response));
+
+                            this.processResponse(response);
+                        }
+                    };
+                    weather_xhr.send();
+                }
+            };
+            xhr.send();
+        }
+
         this.addStars(100);
 
         this.renderCanvas();
+    }
+
+    processResponse(response) {
+        if (response.wind) {
+            this.wind = response.wind;
+        }
+
+        if (response.weather) {
+            if (response.weather.some(weather_option => weather_option.main === 'Rain')) {
+                this.addRain(100);
+            }
+
+            if (response.weather.some(weather_option => weather_option.main === 'Clouds')) {
+                this.cloud = new Image();
+                this.cloud.src = cloud;
+            }
+
+            if (response.weather.some(weather_option => weather_option.main === 'Mist')) {
+                this.mist = true;
+            }
+        }
     }
 
     componentWillUnmount() {
