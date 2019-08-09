@@ -8,7 +8,7 @@
   text-decoration: none;
   line-height: 100px;
   font-size: 50px;
-  background: rgb(110, 180, 200);
+  background: rgb(50, 180, 230);
 }
 
 .Home__Link:hover {
@@ -50,12 +50,52 @@
   height: 100px;
 }
 
-.SocketLogo {
+.SocketClock {
   position: absolute;
   top: 160px;
   left: 50%;
   transform: translateX(-50%);
+  width: 80px;
   height: 80px;
+  font-size: 18px;
+  font-weight: 900;
+  border-radius: 50%;
+  box-shadow: 0 0 80px 20px rgba(255, 255, 255, 0.5);
+}
+
+.SocketClock__24 {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.SocketClock__15 {
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.SocketClock__18 {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.SocketClock__21 {
+  position: absolute;
+  left: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.SocketLogo {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
 }
 
 .NodeJsLogo {
