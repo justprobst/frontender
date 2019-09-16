@@ -24,12 +24,12 @@ io.on('connection', socket => {
         users.push(user);
         socket.broadcast.emit('add user', username);
         socket.emit('users list', users);
+    });
 
-        socket.on('username', username => {
-            const userIndex = users.map(user => user.id).indexOf(userId);
-            users[userIndex].username = username;
-            io.sockets.emit('users list', users);
-        });
+    socket.on('username', username => {
+        const userIndex = users.map(user => user.id).indexOf(userId);
+        users[userIndex].username = username;
+        io.sockets.emit('users list', users);
     });
 
     socket.on('chat message', message => {
