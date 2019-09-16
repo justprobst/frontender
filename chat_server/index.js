@@ -24,9 +24,15 @@ io.on('connection', socket => {
         users.push(user);
         socket.broadcast.emit('add user', username);
         socket.emit('users list', users);
+
+        socket.on('username', username => {
+            const userIndex = users.map(user => user.id).indexOf(userId);
+            users[userIndex].username = username;
+            io.sockets.emit('users list', users);
+        });
     });
 
-    socket.on('chat message', (message) => {
+    socket.on('chat message', message => {
         socket.broadcast.emit('chat message', message, user.username);
     });
 
@@ -34,7 +40,7 @@ io.on('connection', socket => {
         console.log(user.username + ' disconnected');
         const userIndex = users.map(user => user.id).indexOf(userId);
         users[userIndex] = users[users.length - 1];
-        users.pop();
+        if (users.length - 1) users.pop();
         socket.broadcast.emit('users list', users);
     });
 });

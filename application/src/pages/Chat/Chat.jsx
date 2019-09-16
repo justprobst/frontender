@@ -32,6 +32,7 @@ class Chat extends React.Component {
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' && this.state.username.length) {
                                         this.setState({userNameAccepted: true});
+                                        window.socket.emit('username', this.state.username);
                                     }
                                 }}
                             />
@@ -40,6 +41,7 @@ class Chat extends React.Component {
                                 onClick={() => {
                                     if (this.state.username.length) {
                                         this.setState({userNameAccepted: true});
+                                        window.socket.emit('username', this.state.username);
                                     }
                                 }}
                             >CONFIRM NAME</button>
