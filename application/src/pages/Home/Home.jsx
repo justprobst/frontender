@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import react_logo from '../../logo.svg';
 import router_logo from '../../react-router.svg';
 import redux_logo from '../../redux.svg';
@@ -9,6 +10,8 @@ import express_logo from '../../express.png';
 import './Home.css'
 
 import Canvas from '../../components/home/Canvas/Canvas';
+const mapStateToProps = state => ({users: state.users});
+const CanvasContainer = connect(mapStateToProps, {})(Canvas);
 
 function Home() {
     const time = new Date().getHours();
@@ -28,7 +31,7 @@ function Home() {
             </div>
             <img src={nodejs_logo} className="Logo NodeJsLogo" alt="nodejs logo" />
             <img src={express_logo} className="Logo ExpressLogo" alt="express logo" />
-            <Canvas/>
+            <CanvasContainer/>
         </div>
     );
 }

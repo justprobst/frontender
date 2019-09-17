@@ -12,24 +12,26 @@ app.get('/', (req, res) => {
 
 io.on('connection', socket => {
     const user = {};
-    let userId = 0;
 
     socket.on('add user', username => {
         console.log(username + ' connected');
         user.username = username;
-        while (users.length > userId && users.map(user => user.id).indexOf(userId) !== -1) {
-            userId++;
-        }
-        user.id =  userId;
+        user.id = socket.id;
         users.push(user);
-        socket.broadcast.emit('add user', username);
-        socket.emit('users list', users);
+        socket.broadcast.emit('add user', {userId: socket.id, username});
+        socket.emit('users list', users.map(user => user.id === socket.id ? {...user, self: true} : user));
     });
 
     socket.on('username', username => {
-        const userIndex = users.map(user => user.id).indexOf(userId);
+        const userIndex = users.map(user => user.id).indexOf(socket.id);
         users[userIndex].username = username;
         io.sockets.emit('users list', users);
+    });
+
+    socket.on('user move', coordinates => {
+        const userIndex = users.map(user => user.id).indexOf(socket.id);
+        users[userIndex].coordinates = coordinates;
+        socket.broadcast.emit('user coordinates', {userId: socket.id, coordinates});
     });
 
     socket.on('chat message', message => {
@@ -38,9 +40,9 @@ io.on('connection', socket => {
 
     socket.on('disconnect', () => {
         console.log(user.username + ' disconnected');
-        const userIndex = users.map(user => user.id).indexOf(userId);
+        const userIndex = users.map(user => user.id).indexOf(socket.id);
         users[userIndex] = users[users.length - 1];
-        if (users.length - 1) users.pop();
+        users.pop();
         socket.broadcast.emit('users list', users);
     });
 });

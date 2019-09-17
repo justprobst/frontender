@@ -171,6 +171,13 @@ class Canvas extends React.Component {
 
         this.square.render({rain: !!this.drops});
 
+        this.props.users.forEach(user => {
+            if (!user.self && user.coordinates) {
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.fillRect(user.coordinates.x, this.canvas.height - user.coordinates.y, 50, 50);
+            }
+        });
+
         this.animation = requestAnimationFrame(this.renderCanvas.bind(this));
     }
 

@@ -1,4 +1,4 @@
-import { ADD_USER, USERS_LIST  } from '../actions/ActionTypes';
+import {ADD_USER, USERS_LIST, USER_COORDINATES} from '../actions/ActionTypes';
 
 const users = (state = [], action) => {
     switch (action.type) {
@@ -7,6 +7,8 @@ const users = (state = [], action) => {
             return [...state, otherProps];
         case USERS_LIST:
             return action.users;
+        case USER_COORDINATES:
+            return state.map(user => user.id === action.id ? {...user, coordinates: action.coordinates} : user);
         default:
             return state;
     }
