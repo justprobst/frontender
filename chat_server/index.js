@@ -31,7 +31,11 @@ io.on('connection', socket => {
     socket.on('user move', coordinates => {
         const userIndex = users.map(user => user.id).indexOf(socket.id);
         users[userIndex].coordinates = coordinates;
-        socket.broadcast.emit('user coordinates', {userId: socket.id, coordinates});
+        socket.broadcast.emit('user coordinates', {userId: user.id, coordinates});
+    });
+
+    socket.on('send microchat msg', message => {
+        io.sockets.emit('microchat msg', {userId: user.id, coordinates: user.coordinates, message});
     });
 
     socket.on('chat message', message => {

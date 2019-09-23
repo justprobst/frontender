@@ -80,8 +80,8 @@ function Square(x, y, width, height) {
             this.x = 0;
         }
 
-        if (this.y >= this.canvas.height - this.height - 50) {
-            this.y = this.canvas.height - this.height - 50; // todo вынести в переменную floor или как-то так
+        if (this.y >= this.canvas.height - this.height) {
+            this.y = this.canvas.height - this.height;
             this.jump = false;
         }
     };

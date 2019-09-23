@@ -9,7 +9,9 @@ import nodejs_logo from '../../nodejs.svg';
 import express_logo from '../../express.png';
 import './Home.css'
 
+import Microchat from '../../components/home/Microchat/Microchat';
 import Canvas from '../../components/home/Canvas/Canvas';
+
 const mapStateToProps = state => ({users: state.users});
 const CanvasContainer = connect(mapStateToProps, {})(Canvas);
 
@@ -32,6 +34,7 @@ function Home() {
             <img src={nodejs_logo} className="Logo NodeJsLogo" alt="nodejs logo" />
             <img src={express_logo} className="Logo ExpressLogo" alt="express logo" />
             <CanvasContainer/>
+            <Microchat/>
         </div>
     );
 }
