@@ -1,6 +1,6 @@
 import React from 'react';
-import Square from '../Square/Square';
-import Drop from '../Drop/Drop';
+import Square from '../Square/Square.js';
+import Drop from '../Drop/Drop.js';
 import './Canvas.css';
 import cloud from '../../../cloud.png';
 
