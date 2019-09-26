@@ -58,7 +58,7 @@ class Canvas extends React.Component {
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.resize);
-        window.socket.off('microchat msg', this.drawMessage);
+        window.socket.off('microchat msg', this.addMessage);
         cancelAnimationFrame(this.animation);
         this.square.remove();
     }
@@ -140,6 +140,28 @@ class Canvas extends React.Component {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    drawMessage() {
+        this.messages.forEach((message, index) => {
+            if (message.ttl) {
+                const x = message.coordinates.x,
+                      y = this.canvas.height - message.coordinates.y,
+                      length = message.message.length * 30;
+
+                this.ctx.fillStyle = `rgba(255, 255, 255, ${message.ttl / 200})`;
+                this.ctx.fillRect(x, y, length, 50);
+                this.ctx.fillStyle = `rgba(0, 0, 0, ${message.ttl / 200})`;
+                this.ctx.font = "40px serif";
+                this.ctx.textAlign = "center";
+                this.ctx.fillText(message.message, x + length / 2, y + 40);
+
+                message.coordinates.y += 2;
+                message.ttl -= 1;
+            } else {
+                this.messages.splice(index, 1);
+            }
+        });
+    }
+
     renderCanvas() {
         const sin = 0.5 + 0.5 * Math.sin(this.time * Math.PI / 12 - Math.PI * 2 / 3);
 
@@ -183,19 +205,8 @@ class Canvas extends React.Component {
             }
         });
 
-        this.messages.forEach((message, index) => {
-            if (message.ttl) {
-                this.ctx.fillStyle = `rgba(255, 255, 255, ${message.ttl / 200})`;
-                this.ctx.fillRect(message.coordinates.x, this.canvas.height - message.coordinates.y, message.message.length * 18 + 20, 50);
-                this.ctx.fillStyle = `rgba(0, 0, 0, ${message.ttl / 200})`;
-                this.ctx.font = "40px serif";
-                this.ctx.fillText(message.message, message.coordinates.x + 10, this.canvas.height - message.coordinates.y + 40);
-                message.coordinates.y += 2;
-                message.ttl -= 1;
-            } else {
-                this.messages.splice(index, 1);
-            }
-        });
+        if (this.messages.length)
+            this.drawMessage();
 
         this.animation = requestAnimationFrame(this.renderCanvas.bind(this));
     }
