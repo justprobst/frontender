@@ -6,7 +6,7 @@ const users = (state = [], action) => {
             const {type, ...otherProps} = action;
             return [...state, otherProps];
         case USERS_LIST:
-            return action.users;
+            return action.users.map(user => user.id === window.socket.id ? {...user, self: true} : user);
         case USER_COORDINATES:
             return state.map(user => user.id === action.id ? {...user, coordinates: action.coordinates} : user);
         default:

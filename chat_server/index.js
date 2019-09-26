@@ -19,7 +19,7 @@ io.on('connection', socket => {
         user.id = socket.id;
         users.push(user);
         socket.broadcast.emit('add user', {userId: socket.id, username});
-        socket.emit('users list', users.map(user => user.id === socket.id ? {...user, self: true} : user));
+        socket.emit('users list', users);
     });
 
     socket.on('username', username => {
