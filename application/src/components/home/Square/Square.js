@@ -57,14 +57,14 @@ function Square(x, y, width, height) {
                 this.velocityX--;
             }
         } else {
-            this.velocityX *= FRICTION;
+            this.velocityX *= FRICTION; // todo посмотреть как избавиться от пустых пересчетов
         }
 
         if (this.upPressed && !this.jump) {
             this.jump = true;
             this.velocityY = -this.speed * 1.5;
         } else {
-            this.velocityY += GRAVITY;
+            this.velocityY += GRAVITY; // todo посмотреть как избавиться от пустых пересчетов
         }
     };
 
@@ -80,8 +80,8 @@ function Square(x, y, width, height) {
             this.x = 0;
         }
 
-        if (this.y >= this.canvas.height - this.height - 50) {
-            this.y = this.canvas.height - this.height - 50; // todo вынести в переменную floor или как-то так
+        if (this.y >= this.canvas.height - this.height) {
+            this.y = this.canvas.height - this.height;
             this.jump = false;
         }
     };
@@ -121,6 +121,10 @@ function Square(x, y, width, height) {
         updateCoordinates();
         checkCollisionDetection();
         drawSquare(data);
+
+        if (this.velocityX || this.velocityY) {
+            window.socket.emit('user move', {x: this.x, y: this.canvas.height - this.y}); // расстояние от нижней части экрана
+        }
     }
 }
 

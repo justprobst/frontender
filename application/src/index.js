@@ -5,9 +5,12 @@ import { createStore } from 'redux';
 import * as serviceWorker from './serviceWorker';
 import App from './App';
 import reducers from './store/reducers';
+import setupSocket from './socket';
 import './index.css';
 
 const store = createStore(reducers);
+
+window.socket = setupSocket(store.dispatch);
 
 ReactDOM.render(
     <Provider store={store}>

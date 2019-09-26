@@ -12,27 +12,39 @@ app.get('/', (req, res) => {
 
 io.on('connection', socket => {
     const user = {};
-    let userId = 0;
 
     socket.on('add user', username => {
         console.log(username + ' connected');
         user.username = username;
-        while (users.length > userId && users.map(user => user.id).indexOf(userId) !== -1) {
-            userId++;
-        }
-        user.id =  userId;
+        user.id = socket.id;
         users.push(user);
-        socket.broadcast.emit('add user', username);
+        socket.broadcast.emit('add user', {userId: socket.id, username});
         socket.emit('users list', users);
     });
 
-    socket.on('chat message', (message) => {
+    socket.on('username', username => {
+        const userIndex = users.map(user => user.id).indexOf(socket.id);
+        users[userIndex].username = username;
+        io.sockets.emit('users list', users);
+    });
+
+    socket.on('user move', coordinates => {
+        const userIndex = users.map(user => user.id).indexOf(socket.id);
+        users[userIndex].coordinates = coordinates;
+        socket.broadcast.emit('user coordinates', {userId: user.id, coordinates});
+    });
+
+    socket.on('send microchat msg', message => {
+        io.sockets.emit('microchat msg', {userId: user.id, coordinates: user.coordinates, message});
+    });
+
+    socket.on('chat message', message => {
         socket.broadcast.emit('chat message', message, user.username);
     });
 
     socket.on('disconnect', () => {
         console.log(user.username + ' disconnected');
-        const userIndex = users.map(user => user.id).indexOf(userId);
+        const userIndex = users.map(user => user.id).indexOf(socket.id);
         users[userIndex] = users[users.length - 1];
         users.pop();
         socket.broadcast.emit('users list', users);

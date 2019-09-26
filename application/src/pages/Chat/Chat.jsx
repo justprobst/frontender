@@ -1,16 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import openSocket from 'socket.io-client';
 import Sidebar from '../../containers/chat/Sidebar';
 import MessagesList from '../../containers/chat/MessagesList';
 import AddMessage from '../../containers/chat/AddMessage';
-import { messageReceived } from "../../store/actions/messages";
-import { addUser as AddUserAction } from "../../store/actions/users";
-import { populateUsersList } from "../../store/actions/users";
 import './Chat.css';
 
-class ChatComponent extends React.Component {
+class Chat extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,24 +14,10 @@ class ChatComponent extends React.Component {
         }
     }
 
-    setupSocket() {
-        this.socket = openSocket('http://localhost:8989');
-        this.socket.emit('add user', this.state.username);
-        this.socket.on('chat message', (message, username) => this.props.messageReceived(message, username));
-        this.socket.on('add user', username => this.props.addUser(username));
-        this.socket.on('users list', users => this.props.populateUsersList(users));
-    }
-
-    closeSocket() {
-        if (this.socket) {
-            this.socket.disconnect();
-        }
-    }
-
     render() {
         return (
             <div className="Chat">
-                <Link className="Chat__Link" to="/" onClick={() => this.closeSocket()}>Home</Link>
+                <Link className="Chat__Link" to="/">Home</Link>
                 <h1 className="Chat__Title">{this.state.userNameAccepted ? "CHAT" : "WHAT IS YOUR NAME ?"}</h1>
                 {
                     !this.state.userNameAccepted ?
@@ -51,7 +32,7 @@ class ChatComponent extends React.Component {
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' && this.state.username.length) {
                                         this.setState({userNameAccepted: true});
-                                        this.setupSocket();
+                                        window.socket.emit('username', this.state.username);
                                     }
                                 }}
                             />
@@ -60,7 +41,7 @@ class ChatComponent extends React.Component {
                                 onClick={() => {
                                     if (this.state.username.length) {
                                         this.setState({userNameAccepted: true});
-                                        this.setupSocket();
+                                        window.socket.emit('username', this.state.username);
                                     }
                                 }}
                             >CONFIRM NAME</button>
@@ -72,7 +53,7 @@ class ChatComponent extends React.Component {
                             <Sidebar />
                             <div className="MessagesWindow">
                                 <MessagesList />
-                                <AddMessage sendMessageToSocket={message => this.socket.emit('chat message', message)}/>
+                                <AddMessage sendMessageToSocket={message => window.socket.emit('chat message', message)}/>
                             </div>
                         </div>
                     )
@@ -81,19 +62,5 @@ class ChatComponent extends React.Component {
         );
     }
 }
-
-const mapDispatchToProps = dispatch => ({
-    messageReceived: (message, author) => {
-        dispatch(messageReceived(message, author));
-    },
-    addUser: (username) => {
-        dispatch(AddUserAction(username));
-    },
-    populateUsersList: (users) => {
-        dispatch(populateUsersList(users));
-    }
-});
-
-const Chat = connect(() => ({}), mapDispatchToProps)(ChatComponent);
 
 export default Chat;
