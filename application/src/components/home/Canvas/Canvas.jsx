@@ -23,32 +23,22 @@ class Canvas extends React.Component {
 
         window.socket.on('microchat msg', this.addMessage);
 
+        // dont send a request if the data time in storage is less than 10 minutes
         if (sessionStorage.getItem('weather') && (new Date().getTime() - JSON.parse(sessionStorage.getItem('weather')).creation_time < 600000)) {
             const response = JSON.parse(sessionStorage.getItem('weather'));
             this.processResponse(response);
         } else {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://ip-api.com/json');
-            xhr.onreadystatechange  = () => {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const city  = JSON.parse(xhr.response).city;
-
-                    const weather_xhr = new XMLHttpRequest();
-                    weather_xhr.open('GET', `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=908f63483a48a754f71cc6dc4ef45443`);
-                    weather_xhr.onreadystatechange  = () => {
-                        if (weather_xhr.readyState === 4 && weather_xhr.status === 200) {
-                            const response  = JSON.parse(weather_xhr.response);
-                            response.creation_time = new Date().getTime();
-
-                            sessionStorage.setItem('weather', JSON.stringify(response));
-
-                            this.processResponse(response);
-                        }
-                    };
-                    weather_xhr.send();
-                }
-            };
-            xhr.send();
+            fetch( 'http://ip-api.com/json')
+                .then(response => response.json())
+                .then(response => response.city)
+                .then(city => fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=908f63483a48a754f71cc6dc4ef45443`))
+                .then(response => response.json())
+                .then(response => {
+                    response.creation_time = new Date().getTime();
+                    sessionStorage.setItem('weather', JSON.stringify(response));
+                    this.processResponse(response);
+                })
+                .catch(err => console.log(err));
         }
 
         this.addStars(100);
@@ -62,6 +52,11 @@ class Canvas extends React.Component {
         cancelAnimationFrame(this.animation);
         this.square.remove();
     }
+
+    resize = () => {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight - 50;
+    };
 
     addMessage = ({userId, coordinates, message}) => {
         this.messages.push({coordinates, message, ttl: 200});
@@ -87,11 +82,6 @@ class Canvas extends React.Component {
             }
         }
     }
-
-    resize = () => {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight - 50;
-    };
 
     addStars(count) {
         this.stars = [];
@@ -142,27 +132,28 @@ class Canvas extends React.Component {
 
     drawMessage() {
         this.messages.forEach((message, index) => {
-            if (message.ttl) {
-                const x = message.coordinates.x,
-                      y = this.canvas.height - message.coordinates.y,
-                      length = message.message.length * 30;
-
-                this.ctx.fillStyle = `rgba(255, 255, 255, ${message.ttl / 200})`;
-                this.ctx.fillRect(x, y, length, 50);
-                this.ctx.fillStyle = `rgba(0, 0, 0, ${message.ttl / 200})`;
-                this.ctx.font = "40px serif";
-                this.ctx.textAlign = "center";
-                this.ctx.fillText(message.message, x + length / 2, y + 40);
-
-                message.coordinates.y += 2;
-                message.ttl -= 1;
-            } else {
+            if (!message.ttl) {
                 this.messages.splice(index, 1);
+                return;
             }
+
+            const x = message.coordinates.x,
+                  y = this.canvas.height - message.coordinates.y,
+                  length = message.message.length * 30;
+
+            this.ctx.fillStyle = `rgba(255, 255, 255, ${message.ttl / 200})`;
+            this.ctx.fillRect(x, y, length, 50);
+            this.ctx.fillStyle = `rgba(0, 0, 0, ${message.ttl / 200})`;
+            this.ctx.font = "40px serif";
+            this.ctx.textAlign = "center";
+            this.ctx.fillText(message.message, x + length / 2, y + 40);
+
+            message.coordinates.y += 2;
+            message.ttl -= 1;
         });
     }
 
-    renderCanvas() {
+    renderCanvas = () => {
         const sin = 0.5 + 0.5 * Math.sin(this.time * Math.PI / 12 - Math.PI * 2 / 3);
 
         this.ctx.fillStyle = `rgb(${10 * sin}, ${160 * sin}, ${255 * sin})`;
@@ -208,8 +199,8 @@ class Canvas extends React.Component {
         if (this.messages.length)
             this.drawMessage();
 
-        this.animation = requestAnimationFrame(this.renderCanvas.bind(this));
-    }
+        this.animation = requestAnimationFrame(this.renderCanvas);
+    };
 
     render() {
         return (
