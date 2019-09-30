@@ -16,6 +16,10 @@ class Microchat extends React.Component {
         this.setState({input: ''});
     };
 
+    onChange = (e) => {
+        this.setState({input: e.target.value})
+    };
+
     render() {
         return (
             <div className="Microchat">
@@ -24,7 +28,7 @@ class Microchat extends React.Component {
                     type="text"
                     placeholder="Type message"
                     value={this.state.input}
-                    onChange={(e) => this.setState({input: e.target.value})}
+                    onChange={this.onChange}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             this.onSubmitMessage();

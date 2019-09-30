@@ -5,6 +5,6 @@ const mapStateToProps = state => ({
     messages: state.messages
 });
 
-const MessagesList = connect(mapStateToProps, {})(MessagesListComponent);
+const MessagesList = connect(mapStateToProps)(MessagesListComponent);
 
 export default MessagesList;

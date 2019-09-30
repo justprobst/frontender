@@ -9,13 +9,17 @@ class AddMessage extends React.Component {
         }
     }
 
-    onSubmitMessage() {
+    onSubmitMessage = () => {
         if (!this.state.input.length) return;
 
         this.props.onSubmit(this.state.input, 'Me');
         this.props.sendMessageToSocket(this.state.input);
         this.setState({input: ''});
-    }
+    };
+
+    onChange = (e) => this.setState({
+        input: e.target.value
+    });
 
     render() {
         return (
@@ -25,9 +29,7 @@ class AddMessage extends React.Component {
                     type="text"
                     placeholder="Type message"
                     value={this.state.input}
-                    onChange={
-                        (e) => this.setState({input: e.target.value})
-                    }
+                    onChange={this.onChange}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             this.onSubmitMessage();
@@ -36,7 +38,7 @@ class AddMessage extends React.Component {
                 />
                 <button
                     className="AddMessage__Button"
-                    onClick={() => this.onSubmitMessage()}
+                    onClick={this.onSubmitMessage}
                 >Send</button>
             </div>
         );
