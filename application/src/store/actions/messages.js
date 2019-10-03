@@ -2,7 +2,7 @@ import { ADD_MESSAGE, MESSAGE_RECEIVED } from './ActionTypes';
 
 let nextMessageId = 0;
 
-export const AddMessage = (message, author) => ({
+export const addMessage = (message, author) => ({
     type: ADD_MESSAGE,
     id: nextMessageId++,
     message,

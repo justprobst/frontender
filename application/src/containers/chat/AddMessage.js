@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import AddMessageComponent from '../../components/chat/AddMessage/AddMessage';
-import { AddMessage as AddMessageAction } from '../../store/actions/messages';
+import { addMessage as addMessageAction } from '../../store/actions/messages';
 
 const mapDispatchToProps = dispatch => ({
     onSubmit: (message, author) => {
-        dispatch(AddMessageAction(message, author));
+        dispatch(addMessageAction(message, author));
     }
 });
 
