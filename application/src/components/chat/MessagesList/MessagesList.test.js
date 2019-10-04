@@ -10,6 +10,6 @@ describe('messages list', () => {
 
         const messagesList = shallow(<MessagesList {...props} />);
 
-        expect(messagesList.children().length).toEqual(props.messages.length);
+        expect(messagesList.find('Message')).toHaveLength(props.messages.length);
     });
 });
